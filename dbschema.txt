@@ -1,0 +1,11 @@
+---- USER TABLE ----
+1) email
+2) password
+3) JWT
+4) urls (relation to url table)
+
+---- URL TABLE ----
+1) KEY
+2) Long_url
+3) Short_url
+4) isActive
