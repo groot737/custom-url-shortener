@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL shortener</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <% if(user) { %>
+        <header>
+            <div class="header-box">
+                <div class="left-item">
+                    <ul>
+                        <li><a href="/api-docs" target="_blank">API</a></li>
+                        <li onclick="copykey(`<%= user %>`)">Auth Key</li>
+                    </ul>
+                </div>
+                <form id="logout-form" action="/logout" method="post">
+                    <button>Logout</button>
+                </form>
+            </div>
+        </header>
+        <% } %>
+            <section class="modal-section">
+                <div class="modal">
+                    <div class="modal-header">
+                        <h3 onclick="closeModal()">X</h3>
+                    </div>
+                    <div class="modal-box">
+                        <div class="container">
+                            <div class="route">
+                                <h2 id="login-title" onclick="login()">Login</h2>
+                                <hr>
+                                <h2 id="register-title" onclick="register()">Register</h2>
+                            </div>
+                            <form action="/login"  id="inputs" method="post">
+                                <div>
+                                    <label for="email">Email</label>
+                                    <input class="email-input" type="email" name="email" required id="">
+                                </div>
+                                <div>
+                                    <label for="password">Password</label>
+                                    <input class="password-input" type="password" name="password" required id="">
+                                </div>
+                                <p>Email or password is incorrect</p>
+                                <button id="form-button">Login</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="main-container">
+                <h1>Free URL <span style="color: #504ECA;">Shortener</span></h1>
+                <div class="form">
+                    <input type="text" id="input_data" placeholder="url goes here...">
+                    <% if(user) { %>
+                        <button onclick="checkUser(`<%= user %>`)">Shorten url</button>
+                    <% } else { %>
+                        <button onclick="checkUser()">Shorten url</button>
+                    <% } %>
+                </div>
+                <div class="result" id="result" >
+                    <div class="result-box" >
+                        <p class="url" id="result-url"></p>
+                        <div id="action-box">
+                            <p id="display-url"></p>
+                            <button id="copy-btn" >Copy</button>
+                        </div>
+                    </div>
+                </div>
+                <% if(user) { %>
+                    <div class="history-container" id="history-container">
+                        <h2>History</h2>
+                        <div class="box" id="box">
+                            <% if (typeof urls !== 'undefined') { %>
+                                <% urls.forEach(element => { %>
+                                  <!-- Your code for each element goes here -->
+                                  <div class='result'>
+                                    <div class="result-box">
+                                      <p class="url" id="result-url">
+                                        <%= (element.long_url.length > 15) ? element.long_url.slice(0, 20) + '...' : element.long_url %>
+                                      </p>
+                                      <div id="action-box">
+                                        <p id="display-url">
+                                          <a href="<%= element.long_url %>" target="_blank"><%= element.link %></a>
+                                        </p>
+                                        <button id="copy-btn" onclick="navigator.clipboard.writeText('<%= element.link %>')">Copy</button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                <% }) %>
+                              <% } %>                              
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+
+</body>
+<script src="index.js"></script>
+<% if(typeof error !== 'undefined') { %> 
+    <script>
+        alert(`<%= error %>`)
+    </script>
+<%}%>
+</html>

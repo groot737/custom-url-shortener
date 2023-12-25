@@ -9,6 +9,7 @@ const passport                          = require('./passport/passport-config');
 const mainRoute                         = require('./routes/webapp-route')
 const apiRoute                          = require('./routes/api-route')
 const { specs, swaggerUi }              = require('./swagger/swagger');
+const flash                             = require('express-flash'); 
 
 connectToDatabase();
 app.use(
@@ -21,8 +22,10 @@ app.use(
 
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'views')));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
+app.use(flash())
 app.use(passport.initialize());
 app.use(passport.session());
 app.use('/', mainRoute);

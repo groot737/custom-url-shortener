@@ -21,7 +21,6 @@ const authorizationMiddleware = async (req, res, next) => {
             res.status(401).json({ error: 'Unauthorized' });
         }
     } catch (error) {
-        console.error(error);
         res.status(500).json({ error: 'Internal server error' });
     }
 };
@@ -72,7 +71,7 @@ router.post('/short-url', authorizationMiddleware, async (req, res) => {
     const filteredHash = hash.replace(/\//g, '_').replace(/\+/g, '-');
     const shortIdentifier = filteredHash.substring(0, 6);
     const userId = req.user.result.id;
-    const short_url = 'localhost:3000/' + shortIdentifier;
+    const short_url = 'localhost:3000/link/' + shortIdentifier;
 
     const newUrl = new Url({
         userId: userId,
@@ -95,7 +94,6 @@ router.post('/short-url', authorizationMiddleware, async (req, res) => {
 
         res.status(200).json({ message: "Data saved successfully", url: short_url });
     } catch (err) {
-        console.error(err);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
@@ -140,7 +138,7 @@ router.post('/short-url', authorizationMiddleware, async (req, res) => {
         if (user) {
             const urlPromises = user.urls.map(async element => {
                 const url = await Url.findById(element);
-                return { link: url.short_url, id: url._id };
+                return { long_url: url.long_url, link: url.short_url, id: url._id };
             });
 
             const results = await Promise.all(urlPromises);
@@ -150,7 +148,6 @@ router.post('/short-url', authorizationMiddleware, async (req, res) => {
             res.status(500).json({ error: 'Data not found.' });
         }
     } catch (error) {
-        console.error(error);
         res.status(500).json({ error: 'An error occurred.' });
     }
 });
@@ -213,7 +210,6 @@ router.delete('/url/:id', authorizationMiddleware, async (req, res) => {
 
         res.status(200).json({ deleted: true });
     } catch (err) {
-        console.error(err);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
