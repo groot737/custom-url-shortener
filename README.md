@@ -35,7 +35,7 @@ To run the Custom URL Shortener locally, follow these steps:
 
 1. Clone the repository: `git clone https://github.com/your-username/custom-url-shortener.git`
 2. Navigate to the project directory: `cd custom-url-shortener`
-3. Install dependencies: `npm install axios bcrypt dotenv ejs express express-session isomorphic-fetch mongodb mongoose passport passport-local swagger-jsdoc swagger-ui-express`
+3. Install dependencies: `npm install axios bcrypt dotenv ejs express express-session isomorphic-fetch mongodb mongoose passport passport-local swagger-jsdoc swagger-ui-express express-flash`
 4. Set up your MongoDB
 5. Write env variable: `USERNAME = '' PASSWORD = ''`
 6. Change connectionString in ./models/db.js
